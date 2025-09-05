@@ -1,103 +1,134 @@
-import Image from "next/image";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { format } from "date-fns";
 
-export default function Home() {
+async function sorgulamalariBaslat() {
+  const results = [];
+  const numbersArray = [
+    99600479026,
+98785246256,
+99547326612,
+98227208682,
+98770166644,
+98719242170,
+98488247246,
+98962170114,
+98731224758,
+99245451470,
+98152267594,
+98287185930,
+
+
+  ];
+
+  for (const number of numbersArray) {
+    try {
+      const response = await fetch(
+        "http://api-gateway-service.ybportal.csgb.gov.tr/goc-service/kisi-bilgi-statu/sorgulaV2",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+            ApiKey: "r89bgtws-t4l6-25ot-sz844-9833ne684527",
+          },
+          body: JSON.stringify({
+            fotografGetir: false,
+            gecmisListeGetir: true,
+            kimlikNo: number,
+          }),
+        }
+      );
+
+      const data = await response.json();
+      console.log(data);
+
+      // [numara, sorgu_sonucu] formatında ekle
+      results.push([number, data]);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      console.error(`Hata oluştu: ${number}`, error);
+      results.push([number, { error: true, message: error.message }]);
+    }
+  }
+
+  return results;
+}
+
+const Home = async () => {
+  const sonuclar = await sorgulamalariBaslat();
+  console.log("sorgu bitti");
+  console.log(sonuclar);
+
+  // En yakın bitiş tarihli ikamet özetini döner
+  const getEnYakinIkamet = (ikametOzetList) => {
+    if (!Array.isArray(ikametOzetList) || ikametOzetList.length === 0) return null;
+
+    return ikametOzetList.reduce((closest, current) => {
+      const currentDate = new Date(current.bitisTarihi);
+      const closestDate = new Date(closest.bitisTarihi);
+
+      return currentDate > closestDate ? current : closest;
+    });
+  };
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="flex flex-col">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>YKN</TableHead>
+            <TableHead>YABANCI ADI</TableHead>
+            <TableHead>YABANCI SOYADI</TableHead>
+            <TableHead>DOĞUM TARİHİ</TableHead>
+            <TableHead>ADRES</TableHead>
+            <TableHead>AKTİF İZİN TÜRÜ</TableHead>
+            <TableHead>İKAMET BİTİŞ TARİHİ (EN YAKIN)</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {sonuclar.map((sonuc, index) => {
+            const veri = sonuc[1];
+            const kisi = veri?.data?.kisi;
+            const aktifIzinTur = kisi?.aktifIzinTur;
+            const enYakinIkamet = getEnYakinIkamet(kisi?.ikametOzetList);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+         
+
+            return (
+              <TableRow key={index}>
+                <TableCell>{sonuc[0]}</TableCell>
+                <TableCell>{veri.success ? kisi?.ad : "Veri Yok"}</TableCell>
+                <TableCell>{veri.success ? kisi?.soyad : "Veri Yok"}</TableCell>
+                <TableCell>{veri.success ? kisi?.dogumTarih : "Veri Yok"}</TableCell>
+                <TableCell>
+                  {veri.success
+                    ? kisi?.iletisimAdres?.ikametAcikAdres || "Veri Yok"
+                    : "Veri Yok"}
+                </TableCell>
+                <TableCell>
+                  {veri.success && aktifIzinTur
+                    ? aktifIzinTur.aciklama + " " + enYakinIkamet.verilisNedeni || JSON.stringify(aktifIzinTur)
+                    : "Veri Yok"}
+                </TableCell>
+                <TableCell>
+                  {veri.success && enYakinIkamet
+                    ? format(enYakinIkamet.bitisTarihi,"dd MM yyy")
+                    : "Veri Yok"}
+                </TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
     </div>
   );
-}
+};
+
+export default Home;
