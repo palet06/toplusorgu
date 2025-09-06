@@ -1,0 +1,88 @@
+{
+    "success": true,
+    "message": "Operation Success",
+    "data": {
+        "aktifOlayTur": 1,
+        "kisi": {
+            "fotografBase64Str": null,
+            "yabanciKimlikNo": 123456,
+            "dosyaNo": "1111",
+            "dogumUyruk": 333,
+            "uyruk": 333,
+            "dogumYer": 333,
+            "uyrukKimlikNo": null,
+            "ad": "hasan hüseyin",
+            "soyad": "hasan",
+            "oncekiSoyad": null,
+            "babaAd": " HASSAN",
+            "anneAd": "NOORHAN ",
+            "dogumTarih": "1993-03-03",
+            "cinsiyet": 2,
+            "medeniHal": 2,
+            "iletisimAdres": {
+                "ikametAcikAdres": "SELÇUKLU / KONYA",
+                "ikametBagimsizKimlikNo": 56896544,
+                "ikametBinaKimlikNo": 5555555,
+                "ikametCsbmKimlikNo": 5555555,
+                "ikametMahalleKimlikNo": 5555555,
+                "ikametIlceKimlikNo": 55555555,
+                "ikametIlKimlikNo": 22,
+                "ikametTelefon1": "333333333",
+                "ikametTelefon2": null,
+                "kayitliEposta": null,
+                "acikAdres": null,
+                "acikAdresIlKod": null,
+                "acikAdresIlceKod": null
+            },
+            "pasaport": {
+                "belgeNo": "Aty7777",
+                "belgeTur": 1,
+                "duzenlemeTarih": "2022-09-20T00:00:00",
+                "gecerlilikTarih": "2030-09-19T00:00:00",
+                "verenMakam": "İLGİLİ MAKAM",
+                "verenUlke": 777
+            },
+            "aktifIzinTur": "IKAMET_IZNI",
+            "ikametOzetList": [
+                {
+                    "baslangicTarihi": "2024-10-18T00:00:00",
+                    "bitisTarihi": "2026-10-18T00:00:00",
+                    "iptalSonlandirmaTarihi": null,
+                    "verilisNedeni": "Aile",
+                    "verilenYer": "KONYA",
+                    "calismaIznineBasvuruAmacliMi": false
+                }
+            ]
+        },
+        "geciciKorumaBilgileriList": [],
+        "ikametIzniBilgileriList": [
+            {
+                "baslangicTarihi": "2024-10-18T00:00:00",
+                "bitisTarihi": "2026-10-18T00:00:00",
+                "suresi": 2,
+                "suresiBirim": 3,
+                "calismaIznineBasvuruAmacliMi": false,
+                "iptalTarihi": null,
+                "iptalNedeni": null,
+                "basvuruTarihi": "2024-09-13T00:00:00",
+                "basvuruYer": 400657,
+                "ikametIzniBasvuruTur": 1,
+                "ikametIzniTur": 3,
+                "ikametIl": 42,
+                "turkSoylu": null,
+                "ikametTezkereNo": null,
+                "gocmenKalisNeden": null,
+                "kisaDonemKalisNeden": null,
+                "turizmIkametSebep": null,
+                "aileDestekleyiciBasvuraninYakinlik": 1,
+                "aileDestekleyiciTur": 1,
+                "ogrenciKalisNeden": null,
+                "insaniIkametIzniKalisNeden": null,
+                "calismayaYonlendirmeSebeb": null
+            }
+        ],
+        "uluslararasiKorumaBilgileriList": [],
+        "vatansizBilgileriList": []
+    },
+    "errorDetails": null
+}
